@@ -11,12 +11,13 @@ y luego por el tag <h3>Enlaces</h3>
 esto nos dejará solo la descripcion
 '''
 def cortaDescripcion(texto):
-    source = "<h3>Descripción</h3>";
-    source = source.decode('utf-8');
+    #print str(texto.decode('utf-8'));
+    source = "<h3>Descripci";
+    #source2 = source.decode('utf-8');
     corte1 = texto.split(source);
     print len(corte1);
-    #corte2 = corte1[1].split("<h3>Enlaces</h3>");
-    #return corte2[0];
+    corte2 = corte1[1].split("<h3>Enlaces</h3>");
+    return corte2[0][7:];
 
 ArbolDOM = xml.dom.minidom.parse("MonumentosZaragoza.xml");
 catalogo = ArbolDOM.documentElement;
@@ -35,7 +36,7 @@ for feature in Features:
     print datos[0].childNodes[0].data;
 
 nombre = raw_input("Introduce el nombre del monumento: ");
-
+nombre = nombre.decode('utf-8');
 for feature in Features:
     datos = feature.getElementsByTagName("PropertyValue");
     if(datos[0].childNodes[0].data == nombre):
