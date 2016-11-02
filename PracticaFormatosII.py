@@ -15,9 +15,20 @@ def cortaDescripcion(texto):
     source = "<h3>Descripci";
     #source2 = source.decode('utf-8');
     corte1 = texto.split(source);
-    print len(corte1);
     corte2 = corte1[1].split("<h3>Enlaces</h3>");
     return corte2[0][7:];
+
+def muestraPosicion(monumento):
+    print "Nombre del Monumento: ", monumento;
+    serviceurl = 'http://maps.googleapis.com/maps/api/geocode/xml?'
+    url = serviceurl + urllib.urlencode({'address': monumento,'components':'country:ES'})
+    uh= urllib.urlopen(url)
+    data = uh.read()
+    location = data.split("<location>")
+    lat = location[1].split("</lat>")
+    lat2 = lat[0].split("<lat>")
+    print "latitud: ",lat2[1], " longitud: ",lat[1].split("</lng>")[0].split("<lng>")[1];
+    
 
 ArbolDOM = xml.dom.minidom.parse("MonumentosZaragoza.xml");
 catalogo = ArbolDOM.documentElement;
@@ -42,5 +53,8 @@ for feature in Features:
     if(datos[0].childNodes[0].data == nombre):
         Contenido = urllib.urlopen(datos[1].childNodes[0].data); #descargamos los datos de la URL.
         output = Contenido.read();
+        muestraPosicion(nombre);
+        print "Página web asociada: ", datos[1].childNodes[0].data;
+        print "Descripcion: "
         print cortaDescripcion(output);
         break;
